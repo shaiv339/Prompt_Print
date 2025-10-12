@@ -20,15 +20,14 @@ def load_data(csv_path, num_users, seed=42):
 
 def load_data(csv_path, num_users=5):
     df = pd.read_csv(csv_path)
+    unique_users = df['user_id'].unique()
+    top_users = unique_users[:num_users].tolist()
 
-   
-    user_counts = df['user_id'].value_counts().sort_values(ascending=False)
-    top_users = user_counts.head(num_users).index.tolist()
-
+    
     df_sample = df[df['user_id'].isin(top_users)].copy()
 
-    print(f"Selected top {num_users} users with most prompts:")
-    print(user_counts.head(num_users))
+    print(f"Selected first {num_users} users:")
+    print(top_users)
 
     return df_sample, top_users
 
