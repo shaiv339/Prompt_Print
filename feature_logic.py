@@ -3,8 +3,8 @@ import pandas as pd
 from sentence_transformers import SentenceTransformer
 from sklearn.preprocessing import StandardScaler
 
-MODEL_NAME = "all-MiniLM-L6-v2"  # SBERT model
-
+MODEL_NAME = "StyleDistance/styledistance"
+model = SentenceTransformer(MODEL_NAME)
 '''
 def load_data(csv_path, num_users, seed=42):
     np.random.seed(seed)
@@ -62,7 +62,7 @@ def get_sbert_embeddings(prompts):
 '''
 
 def get_style_embeddings(prompts):
-    model = SentenceTransformer(MODEL_NAME)
+    
     embeddings = model.encode(prompts, show_progress_bar=True)
 
     # Debug info
@@ -83,4 +83,6 @@ def build_feature_matrix(df_sample):
     return sbert_embeds
     '''
     style_embeds = get_style_embeddings(df_sample['prompt'].tolist())
+    scaler = StandardScaler()
+    style_embeds = scaler.fit_transform(style_embeds)
     return style_embeds
